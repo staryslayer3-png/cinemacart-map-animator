@@ -115,6 +115,16 @@ Dynamic automated text sizing and positioning directly on top of the country lan
 
 ---
 
+### 10. Real Satellite Terrain Physical Imagery Corridor (NASA Blue Marble)
+Photorealistic 1080p Middle East & South Asia economic/trade corridor built on **NASA Blue Marble 5400x2700 satellite imagery**. Features semi-transparent tinted country polygons (revealing true mountain topography and desert ridges underneath), glowing multi-pass white boundary strokes, animated trade laser rays, and in-map typography across **Turkey, Iran, Pakistan, and Saudi Arabia**.
+
+![Satellite Terrain Corridor Showcase](demos/satellite_corridor_preview.png)
+
+* 📹 **Full Video:** [Watch Satellite Corridor Tour MP4 (1080p)](videos/satellite_corridor_tour.mp4)
+* 💻 **Run:** `node render_satellite_corridor.js`
+
+---
+
 ## ⚡ Performance Benchmark
 
 Measured on standard consumer hardware:
