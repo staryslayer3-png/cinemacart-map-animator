@@ -99,7 +99,19 @@ Direct physical geographic size comparison (e.g. UK vs Pakistan 3.6x area) elimi
 ![Territorial Comparison](demos/split_comparison_preview.png)
 
 * 📹 **Full Video:** [Watch MP4 Video (1080p)](videos/territorial_comparison.mp4)
-* 💻 **Run:** `node render_split_comparison.js`
+---
+
+### 9. On-Territory Best-Fit Typography (In-Polygon Cartography)
+Dynamic automated text sizing and positioning directly on top of the country landmass (Johnny Harris / Vox style). Uses geometric centroid with bounding-box collision clearance and multi-layer drop-shadow contrast:
+* **Germany (Warm Documentary Palette):** Crimson red fill on warm taupe background with crisp white typography.
+* **Pakistan (Tactical Neon Palette):** Emerald neon highlight with centered tracked typography.
+
+| Germany (Warm Documentary Style) | Pakistan (Tactical Neon Style) |
+| :---: | :---: |
+| ![Germany In-Map Label](demos/germany_label_preview.png) | ![Pakistan In-Map Label](demos/pakistan_label_preview.png) |
+| 📹 [Watch Germany MP4](videos/germany_territory_label.mp4) | 📹 [Watch Pakistan MP4](videos/pakistan_territory_label.mp4) |
+
+* 💻 **Run:** `node render_territory_label.js`
 
 ---
 
