@@ -1,0 +1,8 @@
+﻿node_modules/
+frames/
+frames_multistop/
+frames_highlight/
+frames_3countries/
+*.mp4
+*.png
+.DS_Store
