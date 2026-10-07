@@ -1,201 +1,207 @@
-# 🎨 Cinemacart - Universal Frontend Design System & UI Specification
-> **Role:** Universal UI/UX Design System for Map Motion Graphics & Documentary Video Editors  
-> **Tech Stack:** React 18 / Svelte 5 + Tailwind CSS v3/v4 + Lucide Icons + HTML5 Canvas  
-> **Target Theme:** Professional Dark Slate & Obsidian (with High-Contrast Documentary Accents)
+# 🎨 Cinemacart - Complete UI/UX Specification & 9-Page Creation Wizard
+> **Extracted & Reverse-Engineered Directly from Vid Optimus Core Bundles**  
+> **Architecture:** 9-Step Creation Wizard + Left Global Navigation + Studio Timeline Editor  
+> **Tech Stack:** React 18 + Tailwind CSS + Lucide Icons + HTML5/WebGL Canvas
 
 ---
 
-## 1. 🌈 Design Tokens & Color Palette
+## 1. 🧭 Global Left Sidebar Menu Bar (Navigation Rail)
 
-The design system uses a strict hierarchical token system built around deep slate/obsidian backgrounds, crisp border delimiters, and high-impact cinematic neon & documentary accents.
+The app features a persistent vertical rail on the far left (`width: 64px` collapsed, expandable to `240px`) that controls top-level navigation:
 
-### A. Core Neutral Surfaces (Dark Mode Default)
-
-| Token Name | Hex Code | RGB | Tailwind Class | Usage |
-| :--- | :--- | :--- | :--- | :--- |
-| `--c-bg` (Base Canvas) | `#0a0d14` | `10, 13, 20` | `bg-[#0a0d14]` | App background behind panels & workspace. |
-| `--c-surface-1` (Panels) | `#111622` | `17, 22, 34` | `bg-[#111622]` | Sidebar, top toolbar, inspector, and timeline base. |
-| `--c-surface-2` (Cards) | `#182030` | `24, 32, 48` | `bg-[#182030]` | Elevated cards, input fields, dropdown triggers, and buttons. |
-| `--c-surface-3` (Hover) | `#222d42` | `34, 45, 66` | `bg-[#222d42]` | Hover states, active dropdown items, and focused states. |
-| `--c-border-subtle` | `#1e293b` | `30, 41, 59` | `border-slate-800` | Section dividers, subtle grid lines, and canvas frame. |
-| `--c-border-active` | `#334155` | `51, 65, 85` | `border-slate-700` | Input borders, card outlines, and modal borders. |
-
-### B. Typography Colors
-
-| Token Name | Hex Code | RGB | Usage |
-| :--- | :--- | :--- | :--- |
-| `--c-text-primary` | `#f8fafc` | `248, 250, 252` | Headings, active values, button labels, and country titles. |
-| `--c-text-secondary` | `#94a3b8` | `148, 163, 184` | Subtitles, input placeholders, property labels, and hints. |
-| `--c-text-muted` | `#64748b` | `100, 116, 139` | Disabled states, timestamps, frame counters, and shortcuts. |
-
-### C. Cinematic Accent & Highlight Accents
-
-| Accent Name | Hex Code | Secondary Glow | Cartographic Role |
-| :--- | :--- | :--- | :--- |
-| **Emerald Neon** | `#10b981` | `rgba(16, 185, 129, 0.4)` | Tactical territory spotlight, active waypoints, and playhead. |
-| **Crimson Coral** | `#e11d48` | `rgba(225, 29, 72, 0.4)` | Warm documentary highlights (Germany/Europe) & Export CTA. |
-| **Royal Indigo** | `#6366f1` | `rgba(99, 102, 241, 0.4)` | Flight route arcs, ocean features, and multi-country hub 1. |
-| **Electric Amber** | `#f59e0b` | `rgba(245, 158, 11, 0.4)` | Trade corridors, checkpoint badges, and keyframe diamonds. |
-| **Magenta Pink** | `#ec4899` | `rgba(236, 72, 153, 0.4)` | Geopolitical boundary comparison and focus pulse ripples. |
-| **Cyan Laser** | `#06b6d4` | `rgba(6, 182, 212, 0.4)` | Great-circle flight trajectories and satellite ray connectors. |
+| Nav Item | Icon | Role & Action |
+| :--- | :--- | :--- |
+| **New Project** | `PlusSquare` | Opens the 9-Step Video Creation Wizard. |
+| **Projects** | `FolderKanban` | Grid library of recent projects (`.cart`), with status badges: `Draft`, `Script ready`, `Voiced`, `Visualized`, `Exported`. |
+| **Templates** | `LayoutGrid` | Quick-start library (Route Transit, 3D Globe Spin, Territory Spotlight, Satellite Corridor, VS Comparison). |
+| **Asset Library** | `Film` | Stored voiceovers, downloaded NASA satellite textures, TopoJSON regions, and SFX audio wavs. |
+| **Settings / APIs** | `Sliders` | API Keys (Groq, OpenAI, Gemini, ElevenLabs, Fish Audio, Ollama endpoint: `http://localhost:11434`). |
+| **Account / License** | `ShieldCheck` | License tier status, device identifier, and offline unlock state. |
 
 ---
 
-## 2. 🔤 Typography Hierarchy & Font Stack
+## 2. 🧙 The Complete 9-Step Video Creation Wizard
 
-### A. Font Families
-```css
-/* Display & Cinematic Map Typography */
---font-display: "Montserrat", "Bebas Neue", "Inter", -apple-system, sans-serif;
-
-/* Clean UI & Toolbars */
---font-sans: "Inter", "Segoe UI", -apple-system, system-ui, sans-serif;
-
-/* Timestamps, GPS Coordinates & Metrics */
---font-mono: "JetBrains Mono", "Courier Prime", monospace;
-```
-
-### B. Typography Scale
-* **Hero / Country Header (In-Map):** `32px - 48px`, Weight: `800 (Bold)`, Tracking: `+0.12em` (`tracking-wider`), Transform: `uppercase`.
-* **Section Title:** `14px - 16px`, Weight: `700`, Tracking: `+0.05em`.
-* **Property Label:** `12px`, Weight: `500`, Color: `--c-text-secondary`.
-* **Value / Badge / Tag:** `11px - 12px`, Weight: `600`, Radius: `4px`.
-* **Timestamp / Timecode:** `11px`, Family: `mono`, Color: `--c-text-muted`.
-
----
-
-## 3. 📐 Layout Architecture (The 5-Panel Workspace)
-
-The desktop editor uses a responsive 5-zone viewport designed for zero distraction and maximum canvas focus.
+Vid Optimus uses a sequential 9-step wizard before entering the studio editor. Each step has an explicit `title`, `subtitle`, `heading`, `lede` (explanation), interactive inputs, and bottom navigation (`[Back]` and `[Next]` buttons):
 
 ```
-┌─────────────────────────────────────────────────────────────────────────────┐
-│  ZONE 1: TOP APP HEADER (Window Controls, Project Name, Aspect, Export CTA) │
-├───────────┬─────────────────────────────────────────┬───────────────────────┤
-│           │                                         │                       │
-│  ZONE 2:  │        ZONE 3: INTERACTIVE CANVAS       │        ZONE 4:        │
-│  TOOL &   │               VIEWPORT                  │       PROPERTY        │
-│  TEMPLATE │      (Live 60 FPS HTML5 / WebGL)        │       INSPECTOR       │
-│  SIDEBAR  │      Pan / Zoom / Gizmo Reticles        │     (Contextual)      │
-│  (64px /  │                                         │       (280px)         │
-│   240px)  │                                         │                       │
-├───────────┴─────────────────────────────────────────┴───────────────────────┤
-│  ZONE 5: TIMELINE & SCROLLER BAR (Multi-Track, Playhead, Keyframe Diamond)   │
-└─────────────────────────────────────────────────────────────────────────────┘
+[1. Script] ➔ [2. Direction] ➔ [3. Frame] ➔ [4. Visual Style] ➔ [5. Colour]
+     ➔ [6. Models] ➔ [7. Voice & Sound] ➔ [8. Captions] ➔ [9. Review & Build]
 ```
 
 ---
 
-## 4. 🧩 Core Component Library Specifications
+### Step 1: Script (`id: "script"`)
+* **Title:** Script  
+* **Subtitle:** Your words  
+* **Heading:** *"What is this video saying?"*  
+* **Lede:** *"Paste a script and a voice reads it, or bring a recording and it is transcribed and cut on the timings it already has. Your words are never rewritten."*
 
-### Component 1: Top Navigation & Control Header (`HeaderBar`)
-* **Height:** `52px`, Background: `--c-surface-1`, Border: `border-b border-slate-800`.
-* **Left:** App Logo (`Cinemacart`), Project Title Input (Inline editable).
-* **Center Controls:**
-  * **Undo / Redo:** Icon buttons with keyboard shortcut tooltips (`Ctrl+Z`, `Ctrl+Y`).
-  * **Aspect Ratio Selector (Dropdown):**
-    * `16:9` (1920x1080 - YouTube / Landscape)
-    * `9:16` (1080x1920 - Shorts / TikTok / Reels)
-    * `1:1` (1080x1080 - Square Feed)
-  * **Zoom / Fit Toggle:** `Fit to Screen`, `50%`, `100%`, `200%`.
-* **Right Controls:**
-  * Performance Metric Badge: `Render: GPU (NVENC/QSV)`.
-  * **Primary CTA:** **"Export Video"** (`bg-rose-600 hover:bg-rose-500 text-white font-semibold px-4 py-1.5 rounded-lg shadow-lg shadow-rose-900/30`).
+#### Controls & UI Elements:
+1. **Input Mode Segmented Switch:**
+   * ✍️ **Paste Script:** Multi-line textarea with auto-resizing, character count, and real-time word counter.
+   * 🤖 **AI Scriptwriter:** Topic input field (`"History of the Silk Road through Pakistan & Iran"`), Tone selector (`Documentary`, `Dramatic`, `Educational`), Target Duration dropdown (`30s`, `60s`, `2 min`, `5 min`).
+   * 🎙️ **Audio File Upload:** Drag-and-drop `.mp3`/`.wav` recording for automatic local Whisper speech-to-text alignment.
+2. **Hook Generator Button:** `llm_write_hook` — generates 3 attention-grabbing intro hooks.
+3. **Pacing Indicator Badge:** Estimated reading duration calculated at 140 words per minute (WPM).
 
 ---
 
-### Component 2: Left Tool & Template Drawer (`LeftSidebar`)
-* **Width:** Compact mode `64px` (Icons only) / Expanded mode `260px`.
-* **Tab Items:**
-  1. 🗺️ **Templates:** Route Arc, Multi-Stop, Territory Spotlight, 3D Globe Spin, Satellite Corridor, VS Comparison.
-  2. 📍 **Waypoints:** Search city/country autocomplete, lat/long input, Pin style selector.
-  3. 🎨 **Map Styles:** Dark Midnight, Warm Documentary, Military Tactical, NASA Blue Marble Satellite.
-  4. 🔤 **Text & HUD:** Country header, info badge, statistics card, glassmorphic card.
-  5. 🎵 **Audio & SFX:** Deep Whoosh, Inception Thump, Drone Ambient, Dramatic Riser, Edge-TTS Voiceover.
+### Step 2: Direction (`id: "build"`)
+* **Title:** Direction  
+* **Subtitle:** Who cuts it  
+* **Heading:** *"Who decides the edit?"*  
+* **Lede:** *"Hand the shot list to the model, or keep one visual per scene and stay in charge of every one."*
+
+#### Controls & UI Elements:
+1. **Director Mode Toggle Cards:**
+   * **AI Director Mode:** LLM automatically plans the edit, determines how many map shots/scenes, shot duration (2s - 8s), and transitions.
+   * **Manual / 1 Visual Per Scene:** Strict 1:1 mapping where each paragraph or sentence gets a dedicated scene.
+2. **Pacing / Cut Speed Slider:**
+   * `Fast` (2s - 3s per cut - TikTok/Shorts pacing).
+   * `Documentary` (4s - 6s per cut - Vox / Johnny Harris standard).
+   * `Cinematic` (8s - 12s per cut - Slow panoramic sweep).
+3. **Graphics Direction Switch:** LTR (Left to right / English) vs RTL (Right to left / Urdu & Arabic).
 
 ---
 
-### Component 3: The Map Canvas Viewport (`CanvasViewport`)
-* **Center Stage:** Hardware-accelerated canvas element with smooth mouse drag (pan) and wheel (zoom).
-* **HUD Overlay Controls (Floating on canvas):**
-  * Top-Left: Coordinate Readout (`Lat: 33.68° N, Long: 73.04° E | Scale: 2400x`).
-  * Bottom-Center: Floating Mini-Transport (`[⏮] [◀ 10s] [ ▶ PLAY ] [ 10s ▶] [⏭]`).
-  * Bottom-Right: Timecode Pill (`00:03.20 / 00:15.00 | Frame: 96/450`).
+### Step 3: Frame (`id: "frame"`)
+* **Title:** Frame  
+* **Subtitle:** Shape & source  
+* **Heading:** *"What shape is the video?"*  
+* **Lede:** *"Wide for YouTube, tall for Shorts, Reels and TikTok — and, for one visual per scene, where the pictures come from."*
+
+#### Controls & UI Elements:
+1. **Aspect Ratio Selection Cards (Visual Preview):**
+   * 🖥️ **16:9 Landscape (1920x1080):** YouTube, TV, Desktop documentaries.
+   * 📱 **9:16 Portrait (1080x1920):** YouTube Shorts, Instagram Reels, TikTok.
+   * ⏹️ **1:1 Square (1080x1080):** Instagram post, LinkedIn feed.
+2. **Visual Source Priority Checkboxes:**
+   * `[x] Procedural Maps & Cartography` (Our vector and satellite map engine).
+   * `[ ] AI Generated B-Roll` (Flux / Stable Diffusion).
+   * `[x] Free Stock Media` (NASA, Wikimedia, Pexels, Pixabay).
 
 ---
 
-### Component 4: Multi-Track Timeline & Scrubber (`TimelinePanel`)
-* **Height:** `220px`, Resizable via drag handle.
-* **Header Bar:**
-  * Playhead Timecode, Snapping Toggle (`Snap to Grid`), Zoom Slider (Timeline zoom).
-* **Track Structure:**
-  * **Track 1 (Camera & Motion):** Camera Zoom, Pan Keyframes, Ease Curves (`easeInOutCubic`).
-  * **Track 2 (Map Elements):** Country Highlights, Pin Drop triggers, Route line draws.
-  * **Track 3 (Typography & HUD):** Title reveals, Glass card entrance, Subtitle timings.
-  * **Track 4 (Audio & SFX):** Voiceover waveform, Whoosh effects, Background drone.
-* **Scrubber Head:** Neon Emerald vertical line (`#10b981`) with glowing diamond handle.
+### Step 4: Visual Style (`id: "style"`)
+* **Title:** Visual style  
+* **Subtitle:** How pictures are drawn  
+* **Heading:** *"What should the pictures look like?"*  
+* **Lede:** *"The style shapes every image prompt in the project, so it is worth a moment here."*
+
+#### Controls & UI Elements:
+1. **Category Filter Tabs:**
+   * `All`, `Documentary & Maps`, `Realistic`, `Digital Art`, `Traditional`, `Cyber`, `Minimalist`.
+2. **Interactive Visual Style Tiles (With thumbnail preview & badge):**
+   * 🌍 **Vox / Johnny Harris Documentary:** Dark slate ocean (`#060a12`), glowing vector borders, graticule grid lines.
+   * 🛰️ **NASA Blue Marble Satellite:** True photorealistic physical terrain, mountain shaded relief, and desert dunes.
+   * 📜 **Vintage Parchment & Watercolor:** Antique cream paper texture, hand-drawn ink boundaries.
+   * ⚡ **Tactical Military Radar:** Monochromatic emerald neon HUD, coordinate crosshairs, sonar beacon pulses.
+   * 📊 **Minimalist Infographic:** Flat pastel colors, clean vector shapes, bold high-contrast topography.
 
 ---
 
-### Component 5: Contextual Property Inspector (`RightInspector`)
-* **Width:** `280px`, Background: `--c-surface-1`.
-* **Dynamically adapts based on user selection:**
-  * **When Territory Selected:**
-    * Color Picker (Hex, RGB, Presets).
-    * Fill Opacity Slider (`0% - 100%`).
-    * Outer Glow Blur Slider (`0px - 50px`).
-    * On-Map Label Toggle: Enable/Disable, Font size auto-clamp, Angle slider.
-  * **When Route Selected:**
-    * Start / Destination search inputs.
-    * Arc Altitude slider (`Flat` to `Deep High Arc`).
-    * Vehicle Icon: Airplane, Ship, Car, Pulsing Dot.
-    * Dash Pattern: Solid, Dashed `[8, 6]`, Laser Ray.
+### Step 5: Colour (`id: "colour"`)
+* **Title:** Colour  
+* **Subtitle:** Grade & finish  
+* **Heading:** *"Which colour look?"*  
+* **Lede:** *"One grade over every picture and clip, so a video made from many sources still looks like one film. Each tile is the real export."*
+
+#### Controls & UI Elements:
+1. **The 22 Extracted Presets Grid (Hex Swatches):**
+   * `Obsidian Slate`: `#0a0d14` bg with `#10b981` (Emerald) or `#38bdf8` (Sky) accent.
+   * `Warm Documentary`: `#dfd3c3` taupe bg with `#e11d48` (Crimson red) Germany style.
+   * `Cyberpunk Neon`: `#0a1a24` bg with `#22d3ee` (Cyan) and `#ec4899` (Magenta).
+   * `Desert Sand`: `#fef3c7` bg with `#d97706` (Amber) and `#059669` (Forest).
+2. **Custom Color Overrides:**
+   * `Background Colour`: Color picker for ocean/space canvas.
+   * `Accent Colour`: Key elements, waypoint pins, laser lines.
+   * `Ink / Text Colour`: On-map typography and card text fill.
 
 ---
 
-### Component 6: Standard Interactive Controls (`Atoms`)
+### Step 6: Models (`id: "models"`)
+* **Title:** Models  
+* **Subtitle:** Who writes & draws  
+* **Heading:** *"Which models do the work?"*  
+* **Lede:** *"The model that writes the visual prompts, and the providers that turn them into pictures."*
 
-#### A. Custom Segmented Switch (Tabs):
-```html
-<div class="flex p-1 bg-slate-900 border border-slate-800 rounded-lg">
-  <button class="flex-1 py-1.5 text-xs font-semibold text-white bg-slate-800 rounded-md shadow-sm">Vector</button>
-  <button class="flex-1 py-1.5 text-xs font-medium text-slate-400 hover:text-white">Satellite</button>
-</div>
-```
-
-#### B. Slider with Numeric Readout:
-```html
-<div class="space-y-1.5">
-  <div class="flex justify-between text-xs font-medium text-slate-300">
-    <span>Glow Radius</span>
-    <span class="font-mono text-emerald-400">28px</span>
-  </div>
-  <input type="range" min="0" max="50" value="28" 
-    class="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-emerald-500" />
-</div>
-```
-
-#### C. Glassmorphic HUD Card (Preset):
-```css
-.hud-glass-card {
-  background: rgba(15, 23, 42, 0.85);
-  backdrop-filter: blur(16px);
-  border: 1px solid rgba(16, 185, 129, 0.3);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.1);
-  border-radius: 12px;
-}
-```
+#### Controls & UI Elements:
+1. **Language & Script Model Dropdown:**
+   * 🦙 **Ollama (Local / Free / Offline):** Direct connection to `http://localhost:11434` (Llama 3, Mistral, Qwen).
+   * ⚡ **Groq (Recommended):** Llama-3.3-70b (sub-second script generation + Whisper transcription).
+   * 🧠 **OpenAI:** GPT-4o / GPT-4o-mini.
+   * 🔮 **Google Gemini:** Gemini 1.5 Pro / Flash.
+2. **Provider Status Badges:** Green dot (`Connected`), Gray dot (`API Key Required`).
 
 ---
 
-## 5. 🎬 Export Modal Specification (`ExportDialog`)
+### Step 7: Voice & Sound (`id: "audio"`)
+* **Title:** Voice & sound  
+* **Subtitle:** How it's heard  
+* **Heading:** *"How should it sound?"*  
+* **Lede:** *"The narrator, the bed under them, and the sounds each cut makes."*
 
-* **Title:** Export Animation to Video
-* **Settings:**
-  * **Resolution:** `1080p Full HD (1920x1080)` (Default) / `4K Ultra HD (3840x2160)` / `720p HD`.
-  * **Frame Rate:** `30 FPS` (Standard) / `60 FPS` (Ultra Smooth).
-  * **Encoder Engine:** 
-    * `Hardware Accelerated (Auto: Intel QSV / NVIDIA NVENC)` — Ultra Fast.
-    * `Software CPU (libx264 - CRF 19)` — High Quality.
-  * **Audio Options:** Include SFX, Voiceover mix, Mute.
-* **Progress Bar:** Animated emerald pulse bar showing `Frame 84 / 150 (56%) • Est. 4s remaining`.
+#### Controls & UI Elements:
+1. **TTS Engine Selector:**
+   * 🎙️ **Voicely TTS (Bundled Edge-TTS):** 100% Free, 322 voices, 75 languages (including Urdu `ur-PK`, English `en-US`, Arabic `ar-SA`). No API key needed!
+   * 💎 **ElevenLabs:** Ultra-realistic emotional AI voices (API key required).
+   * 🐟 **Fish Audio / Musa:** Voice cloning and specialized accents.
+2. **Voice Picker & Preview:**
+   * Dropdown with search by language, gender (Male/Female), and accent.
+   * `[▶ Play Sample]` instant audition button.
+3. **Sound Effects (SFX) Library:**
+   * Toggles for automatic sound effects:
+     * `[x] Deep Whoosh` on camera pans and map transitions.
+     * `[x] Inception Thump / Dramatic Impact` on country highlight locks.
+     * `[x] Riser / Buildup` on route arc arrivals.
+4. **Background Music (BGM):**
+   * Ambient Drone, Investigation Tension, Documentary Acoustic.
+   * Background Volume slider (`Default: 12% - ducked under voiceover`).
+
+---
+
+### Step 8: Captions (`id: "captions"`)
+* **Title:** Captions  
+* **Subtitle:** Text & graphics  
+* **Heading:** *"Text on screen"*  
+* **Lede:** *"Captions and motion graphics share one accent, so they are set together — and set now, so the first graphic is drawn in the right colour rather than recoloured later."*
+
+#### Controls & UI Elements:
+1. **Caption Style Cards:**
+   * **Karaoke Word Pop:** Active spoken word illuminates in accent color.
+   * **Minimal Clean Subtitle:** 3 to 5 words per chunk with dark outline.
+   * **News Documentary Lower Third:** Frosted glass banner at screen bottom.
+2. **Typography Selector:**
+   * Bundled Fonts: `Montserrat`, `Arial Black`, `Impact`, `Bebas Neue`, `Inter`, `Noto Nastaliq Urdu`, `Amiri Arabic`.
+   * Font Size Slider (`40px - 90px`).
+   * Outline Width (`0px - 8px`) & Outline Color picker.
+3. **Screen Position Selector:** `Bottom` (standard), `Center` (TikTok viral), `Top`.
+
+---
+
+### Step 9: Review & Build (`id: "review"`)
+* **Title:** Review  
+* **Subtitle:** Create the project  
+* **Heading:** *"Ready to build"*  
+* **Lede:** *"Everything below can still be changed after the project is made."*
+
+#### Controls & UI Elements:
+1. **Summary Inspection Card:**
+   * Displays chips: `Duration: 60s`, `Aspect: 16:9`, `Style: NASA Satellite`, `Voice: Christopher Neural`, `Captions: Montserrat Bold`.
+2. **Primary Action:**
+   * **[🚀 BUILD PROJECT & OPEN STUDIO]** button.
+   * Instantly initializes the storyboard, generates the timeline scenes, and loads the interactive Canvas Workspace!
+
+---
+
+## 3. 🎬 The Post-Wizard Studio Workspace (Timeline & Inspector)
+
+Once the user clicks **Build Project**, the app switches to the full Studio Editor with:
+1. **Center Interactive Canvas:** Live 60 FPS HTML5 preview of the active scene.
+2. **Bottom Multi-Track Timeline:**
+   * Scene strips with thumbnail cards.
+   * Audio waveform track with word timestamp markers.
+   * SFX cues (`deep-whoosh-1.wav`, `impact-hit.wav`).
+3. **Right Inspector Panel:** Fine-tune camera lat/long, zoom scale, territory glow, and route curve height.
+4. **Header Bar:** Real-time timecode readout, Undo/Redo, and **Export Video** dialog.
